@@ -21,6 +21,7 @@ def request_accept():
 @app.route("/login_to_amazon",methods=['POST'])
 def login_to_amazon():
     try:
+        import ipdb;ipdb.set_trace()
         pd=ujson.loads(request.get_data())
         br.set_credentials(pd['username'],pd['password'])
         br.navigate_to_login()
