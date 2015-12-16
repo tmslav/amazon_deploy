@@ -6,7 +6,7 @@ import ujson
 br=Amazon_API()
 @app.route("/",methods=['GET'])
 def r():
-    return "Hello world!"
+    return "Hi"
 
 @app.route("/post_code",methods=['POST'])
 def request_accept():
@@ -14,7 +14,7 @@ def request_accept():
         pd = ujson.loads(request.get_data())
         br.set_code(pd['code'])
         ret = br.enter_code()
-        return ret,200
+        return "OK",200
     except:
         return "ERROR",400
 
@@ -28,7 +28,7 @@ def login_to_amazon():
         br.navigate_to_code_reedem()
         return 'OK',200
     except:
-        return "ERROR",400
+        return "ERROR:".format(request.get_data()),400
 
 
 
