@@ -53,7 +53,6 @@ class Amazon_API(object):
         br.find_element_by_id("ap_email").send_keys(self.username)
         br.find_element_by_id("ap_password").send_keys(self.password)
         br.find_element_by_id("signInSubmit").click()
-        import ipdb;ipdb.set_trace()
         return self.br.page_source
 
     def navigate_to_code_reedem(self):
