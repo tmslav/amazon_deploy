@@ -28,7 +28,7 @@ def login_to_amazon():
         br.navigate_to_code_reedem()
         return 'OK',200
     except:
-        return "ERROR:".format(request.get_data()),400
+        return "ERROR:{}".format(request.get_data()),400
 
 
 
