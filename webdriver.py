@@ -27,6 +27,7 @@ class Amazon_API(object):
         dcap = dict(DesiredCapabilities.PHANTOMJS)
         dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:36.0) Gecko/20100101 Firefox/36.0 WebKit" )
         self.br = webdriver.PhantomJS(desired_capabilities=dcap,service_args=['--ssl-protocol=any','--ignore-ssl-errors=true'])
+        #self.br=webdriver.Firefox()
         self.br.set_window_size(width,height)
         self.state = "init"
 
@@ -50,7 +51,7 @@ class Amazon_API(object):
             self.solve_captch()
 
         br.find_element_by_id("ap_email").send_keys(self.username)
-        br.find_element_by_id("ap_password").send_keys(self.password+"1")
+        br.find_element_by_id("ap_password").send_keys(self.password)
         br.find_element_by_id("signInSubmit").click()
         import ipdb;ipdb.set_trace()
         return self.br.page_source
@@ -119,6 +120,3 @@ class Amazon_API(object):
 
 
 browser = Amazon_API()
-browser.navigate_to_login()
-browser.set_credentials("tmslav+1@gmail.com","perodero")
-browser.login()
