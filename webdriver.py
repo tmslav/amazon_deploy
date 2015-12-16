@@ -2,6 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+from PIL import Image
+import StringIO
+import base64
+import tesseract_ocr
+
 from copy import deepcopy
 
 class Amazon_API(object):
@@ -30,7 +35,6 @@ class Amazon_API(object):
         self.password = password
 
     def navigate_to_login(self):
-
         br =  self.br
         br.save_screenshot("ss.png")
         self.br.get("https://www.amazon.com/")
@@ -41,9 +45,14 @@ class Amazon_API(object):
     def login(self):
         br = self.br
         br.save_screenshot("ss.png")
+        captcha = br.find_elements_by_id("auth-captcha-guess")
+        if captcha:
+            self.solve_captch()
+
         br.find_element_by_id("ap_email").send_keys(self.username)
-        br.find_element_by_id("ap_password").send_keys(self.password)
+        br.find_element_by_id("ap_password").send_keys(self.password+"1")
         br.find_element_by_id("signInSubmit").click()
+        import ipdb;ipdb.set_trace()
         return self.br.page_source
 
     def navigate_to_code_reedem(self):
@@ -57,17 +66,45 @@ class Amazon_API(object):
     def set_code(self,code):
         self.code = code
 
+    def solve_captcha_login(self):
+        br = self.br
+        element = br.find_element_by_id('auth-captcha-image') # find part of the page you want image of
+        location = element.location
+        size = element.size
+        im = Image.open(StringIO.StringIO(base64.decodestring(br.get_screenshot_as_base64())))
+
+        left = location['x']
+        top = location['y']
+        right = location['x'] + size['width']
+        bottom = location['y'] + size['height']
+        im = im.crop((left, top, right, bottom))  # defines crop points
+        im.save("captcha.jpg")
+        text = tesseract_ocr.text_for_filename("captcha.jpg")
+        br.find_element_by_id("auth-captcha-guess").send_keys(text)
+
+    def solve_captcha_reedeem(self):
+        br = self.br
+        element = br.find_element_by_class_name("gc-captcha-image")
+        location = element.location
+        size = element.size
+        im = Image.open(StringIO.StringIO(base64.decodestring(br.get_screenshot_as_base64())))
+        left,top,right,bottom = location['x'],location['y'],location['x']+size['width'],location['y']+size['height']
+        im = im.crop((left,top,right,bottom))
+        im.save("captcha_reedem.jpg")
+        text = tesseract_ocr.text_for_filename("captcha_reedem.jpg")
+        br.find_element_by_xpath("//input[@name='captchaInput']").send_keys(text)
+
     def enter_code(self):
-        import ipdb;ipdb.set_trace()
         code = self.code
         br = self.br
-        br.save_screenshot("ss.png")
+        captcha = br.find_element_by_class_name("gc-captcha-image")
+        if captcha:
+            self.solve_captcha_reedeem()
+
         old_balance = br.find_element_by_id("gc-current-balance").text
         self.ret['old_balance'] = old_balance if old_balance else "0"
-
         br.find_element_by_id("gc-redemption-input").send_keys(self.code)
         br.find_elements_by_class_name("a-button-input")[0].click()
-        page_source = deepcopy(br.page_source)
         status = br.find_element_by_class_name("a-alert-heading").text
 
         self.ret['status_msg'] = status if status else "unknown"
@@ -82,3 +119,6 @@ class Amazon_API(object):
 
 
 browser = Amazon_API()
+browser.navigate_to_login()
+browser.set_credentials("tmslav+1@gmail.com","perodero")
+browser.login()
