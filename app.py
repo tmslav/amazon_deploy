@@ -12,17 +12,19 @@ def r():
 def image():
         return send_file("ss.png",mimetype='image/gif')
 
-@app.route("/post_code",methods=['POST'])
+@app.route("/send_code",methods=['POST'])
 def request_accept():
     try:
         pd = ujson.loads(request.get_data())
         br.set_code(pd['code'])
         ret = br.enter_code()
-        return "OK",200
+        return ujson.dumps(ret),200
     except:
+        import traceback
+        traceback.print_exc()
         return "ERROR",400
 
-@app.route("/login_to_amazon",methods=['POST'])
+@app.route("/login",methods=['POST'])
 def login_to_amazon():
     try:
         pd=ujson.loads(request.get_data())
