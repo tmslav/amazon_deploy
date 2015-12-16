@@ -68,7 +68,8 @@ class Amazon_API(object):
         br.find_element_by_id("gc-redemption-input").send_keys(self.code)
         br.find_elements_by_class_name("a-button-input")[0].click()
         page_source = deepcopy(br.page_source)
-        status = br.find_element_by_class("a-alert-heading").text
+        status = br.find_element_by_class_name("a-alert-heading").text
+
         self.ret['status_msg'] = status if status else "unknown"
         self.ret['status'] = "valid" if "has been added to your" in status else "invalid"
         new_balance = br.find_element_by_id("gc-current-balance").text
