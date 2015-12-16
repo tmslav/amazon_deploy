@@ -2,4 +2,5 @@
 *.html
 *.png
 *.jpg
+*.log
 .gitignore
