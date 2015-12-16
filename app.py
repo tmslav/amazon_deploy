@@ -1,9 +1,9 @@
 from flask import Flask,request,send_file
 app = Flask(__name__)
-from webdriver import Amazon_API
+from webdriver import browser as br
 import ujson
 
-br=Amazon_API()
+
 @app.route("/",methods=['GET'])
 def r():
     return "Hi"
@@ -25,7 +25,6 @@ def request_accept():
 @app.route("/login_to_amazon",methods=['POST'])
 def login_to_amazon():
     try:
-        import ipdb;ipdb.set_trace()
         pd=ujson.loads(request.get_data())
         br.set_credentials(pd['username'],pd['password'])
         br.navigate_to_login()

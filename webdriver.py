@@ -43,7 +43,7 @@ class Amazon_API(object):
         br.save_screenshot("ss.png")
         br.find_element_by_id("ap_email").send_keys(self.username)
         br.find_element_by_id("ap_password").send_keys(self.password)
-        br.find_element_by_id("signInSubmit").send_keys(Keys.ENTER)
+        br.find_element_by_id("signInSubmit").click()
         return self.br.page_source
 
     def navigate_to_code_reedem(self):
@@ -58,6 +58,7 @@ class Amazon_API(object):
         self.code = code
 
     def enter_code(self):
+        import ipdb;ipdb.set_trace()
         code = self.code
         br = self.br
         br.save_screenshot("ss.png")
@@ -79,4 +80,4 @@ class Amazon_API(object):
 
 
 
-
+browser = Amazon_API()
