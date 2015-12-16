@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask,request,send_file
 app = Flask(__name__)
 from webdriver import Amazon_API
 import ujson
@@ -7,6 +7,10 @@ br=Amazon_API()
 @app.route("/",methods=['GET'])
 def r():
     return "Hi"
+
+@app.route("/image")
+def image():
+        return send_file("ss.png",mimetype='image/gif')
 
 @app.route("/post_code",methods=['POST'])
 def request_accept():

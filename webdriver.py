@@ -30,7 +30,9 @@ class Amazon_API(object):
         self.password = password
 
     def navigate_to_login(self):
+
         br =  self.br
+        br.save_screenshot("ss.png")
         self.br.get("https://www.amazon.com/")
         href = br.find_element_by_xpath("//div[@id='nav-flyout-ya-signin']/a").get_attribute("href")
         br.get(href)
@@ -38,6 +40,7 @@ class Amazon_API(object):
 
     def login(self):
         br = self.br
+        br.save_screenshot("ss.png")
         br.find_element_by_id("ap_email").send_keys(self.username)
         br.find_element_by_id("ap_password").send_keys(self.password)
         br.find_element_by_id("signInSubmit").send_keys(Keys.ENTER)
@@ -45,6 +48,7 @@ class Amazon_API(object):
 
     def navigate_to_code_reedem(self):
         br = self.br
+        br.save_screenshot("ss.png")
         br.find_element_by_partial_link_text("Gift Cards").click()
         redeem = [(i,i.get_attribute("alt")) for i in self.br.find_elements_by_xpath("//div[@id='merchandised-content']//map/area[@alt]") if i.get_attribute("alt")=='Redeem an Amazon.com gift card']
         if redeem:
@@ -56,6 +60,7 @@ class Amazon_API(object):
     def enter_code(self):
         code = self.code
         br = self.br
+        br.save_screenshot("ss.png")
         old_balance = br.find_element_by_id("gc-current-balance").text
         self.ret['old_balance'] = old_balance if old_balance else "0"
 
@@ -68,6 +73,7 @@ class Amazon_API(object):
         new_balance = br.find_element_by_id("gc-current-balance").text
         self.ret['new_balance'] = new_balance
         br.get(self.base_redeem_url)
+        br.save_screenshot("ss.png")
 
         return self.ret
 
