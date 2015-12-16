@@ -9,9 +9,9 @@ import ujson
 def r():
     return "Hi"
 
-@app.route("/image")
-def image():
-        return send_file("ss.png",mimetype='image/gif')
+@app.route("/state")
+def state():
+    return br.state,200
 
 @app.route("/send_code",methods=['POST'])
 def request_accept():

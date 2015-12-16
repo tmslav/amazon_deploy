@@ -14,6 +14,7 @@ import tesseract_ocr
 from copy import deepcopy
 
 class Amazon_API(object):
+    state = "start"
     max_wait=5
     ret ={"old_balance":'','status_msg':'','new_balance':'',}
     base_redeem_url = "https://www.amazon.com/gc/redeem"
@@ -57,12 +58,14 @@ class Amazon_API(object):
         self.wait_for_element(br.find_element_by_partial_link_text("Gift Cards"))
 
     def navigate_to_code_reedem(self):
+        self.state="loggedin"
         br = self.br
         br.find_element_by_partial_link_text("Gift Cards").click()
         redeem = [(i,i.get_attribute("alt")) for i in self.br.find_elements_by_xpath("//div[@id='merchandised-content']//map/area[@alt]") if i.get_attribute("alt")=='Redeem an Amazon.com gift card']
         if redeem:
             self.wait_for_element(redeem[0][0])
             redeem[0][0].click()
+        self.state = 'enter_code'
 
     def set_code(self,code):
         self.code = code
