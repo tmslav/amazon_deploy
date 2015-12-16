@@ -1,3 +1,4 @@
+__author__="tmslav"
 from flask import Flask,request,send_file
 app = Flask(__name__)
 from webdriver import browser as br
