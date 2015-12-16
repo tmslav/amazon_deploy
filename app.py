@@ -4,6 +4,9 @@ from webdriver import Amazon_API
 import ujson
 
 br=Amazon_API()
+@app.route("/",methods=['GET'])
+def r():
+    return "Hello world!"
 
 @app.route("/post_code",methods=['POST'])
 def request_accept():
@@ -31,4 +34,4 @@ def login_to_amazon():
 
 
 if __name__=='__main__':
-    app.run(port=5000)
+    app.run(port=5000,host="0.0.0.0")
