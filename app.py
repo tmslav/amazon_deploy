@@ -17,8 +17,7 @@ def state():
 def request_accept():
     try:
         pd = ujson.loads(request.get_data())
-        br.set_code(pd['code'])
-        ret = br.enter_code()
+        ret = br.enter_code(pd['code'])
         return ujson.dumps(ret),200
     except:
         import traceback

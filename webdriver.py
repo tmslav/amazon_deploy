@@ -67,9 +67,6 @@ class Amazon_API(object):
             redeem[0][0].click()
         self.state = 'enter_code'
 
-    def set_code(self,code):
-        self.code = code
-
     def solve_captcha_login(self):
         br = self.br
         element = br.find_element_by_id('auth-captcha-image') # find part of the page you want image of
@@ -98,8 +95,7 @@ class Amazon_API(object):
         text = tesseract_ocr.text_for_filename("captcha_reedem.jpg")
         br.find_element_by_xpath("//input[@name='captchaInput']").send_keys(text)
 
-    def enter_code(self):
-        code = self.code
+    def enter_code(self,code):
         br = self.br
         captcha = br.find_elements_by_class_name("gc-captcha-image")
         if captcha:
@@ -107,7 +103,7 @@ class Amazon_API(object):
         old_balance_elem = br.find_element_by_id("gc-current-balance")
         old_balance =  old_balance_elem.text
         self.ret['old_balance'] = old_balance if old_balance else "0"
-        br.find_element_by_id("gc-redemption-input").send_keys(self.code)
+        br.find_element_by_id("gc-redemption-input").send_keys(code)
         br.find_elements_by_class_name("a-button-input")[0].click()
         try:
             self.wait_for_element(br.find_element_by_class_name("a-alert-heading"))
