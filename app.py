@@ -25,6 +25,7 @@ def request_accept():
         ret = br.enter_code(pd['code'])
         return ujson.dumps(ret),200
     except:
+        br.state='start'
         import traceback
         traceback.print_exc()
         return "ERROR",400
