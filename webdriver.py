@@ -22,8 +22,8 @@ class Amazon_API(object):
     def __init__(self,width=1151,height=629):
         dcap = dict(DesiredCapabilities.PHANTOMJS)
         dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:36.0) Gecko/20100101 Firefox/36.0 WebKit" )
-        #self.br = webdriver.PhantomJS(desired_capabilities=dcap,service_args=['--ssl-protocol=any','--ignore-ssl-errors=true'])
-        self.br=webdriver.Firefox()
+        self.br = webdriver.PhantomJS(desired_capabilities=dcap,service_args=['--ssl-protocol=any','--ignore-ssl-errors=true'])
+        #self.br=webdriver.Firefox()
         self.br.set_window_size(width,height)
 
     def set_credentials(self,username,password):
