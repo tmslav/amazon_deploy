@@ -17,14 +17,13 @@ def state():
 def request_accept():
     try:
         pd = ujson.loads(request.get_data())
-        if pd.get("code") and br.state=='enter_code':
-            ret = br.enter_code(pd['code'])
-            return ujson.dumps(ret),200
-        else:
+        if br.state !='enter_code':
             br.navigate_to_login()
             br.login(pd['username'],pd['password'])
             br.navigate_to_code_reedem()
-            return 'OK',200
+
+        ret = br.enter_code(pd['code'])
+        return ujson.dumps(ret),200
     except:
         import traceback
         traceback.print_exc()
