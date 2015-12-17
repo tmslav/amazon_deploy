@@ -22,8 +22,8 @@ class Amazon_API(object):
     def __init__(self,width=1151,height=629):
         dcap = dict(DesiredCapabilities.PHANTOMJS)
         dcap["phantomjs.page.settings.userAgent"] = ( "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:36.0) Gecko/20100101 Firefox/36.0 WebKit" )
-        self.br = webdriver.PhantomJS(desired_capabilities=dcap,service_args=['--ssl-protocol=any','--ignore-ssl-errors=true'])
-        #self.br=webdriver.Firefox()
+        #self.br = webdriver.PhantomJS(desired_capabilities=dcap,service_args=['--ssl-protocol=any','--ignore-ssl-errors=true'])
+        self.br=webdriver.Firefox()
         self.br.set_window_size(width,height)
 
     def set_credentials(self,username,password):
@@ -109,9 +109,12 @@ class Amazon_API(object):
         self.ret['old_balance'] = old_balance if old_balance else "0"
         br.find_element_by_id("gc-redemption-input").send_keys(self.code)
         br.find_elements_by_class_name("a-button-input")[0].click()
-        self.wait_for_element(br.find_element_by_class_name("a-alert-heading"))
-        status_elem = br.find_element_by_class_name("a-alert-heading")
-        status = status_elem.text
+        try:
+            self.wait_for_element(br.find_element_by_class_name("a-alert-heading"))
+            status_elem = br.find_element_by_class_name("a-alert-heading")
+            status = status_elem.text
+        except:
+            status = br.find_element_by_class_name("a-alert-content").text
 
         self.ret['status_msg'] = status if status else "unknown"
         self.ret['status'] = "valid" if "has been added to your" in status else "invalid"
