@@ -32,7 +32,6 @@ class Amazon_API(object):
 
     def navigate_to_login(self):
         br =  self.br
-        br.save_screenshot("ss.png")
         self.br.get("https://www.amazon.com/")
         href = br.find_element_by_xpath("//div[@id='nav-flyout-ya-signin']/a").get_attribute("href")
         br.get(href)
@@ -45,8 +44,9 @@ class Amazon_API(object):
         except:
             pass
 
-    def login(self):
+    def login(self,username,password):
         br = self.br
+        self.set_credentials(username,password)
         br.save_screenshot("ss.png")
         captcha = br.find_elements_by_id("auth-captcha-guess")
         if captcha:
