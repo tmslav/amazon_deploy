@@ -29,9 +29,8 @@ def request_accept():
 def login_to_amazon():
     try:
         pd=ujson.loads(request.get_data())
-        br.set_credentials(pd['username'],pd['password'])
         br.navigate_to_login()
-        br.login()
+        br.login(pd['username'],pd['password'])
         br.navigate_to_code_reedem()
         return 'OK',200
     except:
